@@ -1,20 +1,35 @@
 <script>
-import Header from "../components/Header.vue"
+import XAIHeader from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
+import {url} from "../script/url"
 
 export default{
-  components:{Header,Footer}
+  components:{XAIHeader,Footer},
+  mounted() {
+    this.axios.post("/login/", { baseURL: url }).then((response) => {
+      console.log(response.data)
+      if (response.data.stateCode === 1) {
+
+        this.usrName = response.data.usrName
+        this.$store.state.loginState.isLogin = true
+      }
+      else {
+        this.$store.state.loginState.isLogin = false
+      }
+
+    })
+  }
 }
 </script>
 
 <template>
-  <Header/>
+  <XAIHeader :homeActive="true"></XAIHeader>
   <div class="container-fluid bg-light mb-5">
     <div class="row justify-content-center">
       <div class="col-md-3 offset-2 align-self-center">
         <h1 class="display-1">XAI System</h1>
         <p class="lead">通过可解释技术构建透明的、可信任的人工智能系统</p>
-          <a href="/"><button type="button"  class="btn btn-primary btn-lg">
+          <a href="/help"><button type="button"  class="btn btn-primary btn-lg">
             开始了解
           </button></a>
           <a href="/task"><button type="button" to="/task" class="btn btn-primary btn-lg mx-2">
